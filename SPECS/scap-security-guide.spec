@@ -5,7 +5,7 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.69
+Version:              0.1.72
 Release:              2%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
@@ -14,15 +14,9 @@ URL:                  https://github.com/ComplianceAsCode/content/
 Source0:              https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
 # Include tarball with last released rhel6 content
 Source1:              %{_static_rhel6_content}.tar.bz2
-# Disable profiles not in good shape
-#     rhel8 - cjis rht-ccp standard
-Patch0:               disable-not-in-good-shape-profiles.patch
-# Fix rule enable_fips_mode
-Patch1:               scap-security-guide-0.1.70-improve_readability_enable_fips_mode-PR_10911.patch
-Patch2:               scap-security-guide-0.1.70-fix_enable_fips_mode-PR_10961.patch
-# remove rule sebool_secure_mode_insmod from ANSSI high profile because it prevents UEFI-based systems from booting
-Patch3:               scap-security-guide-0.1.70-remove_sebool_secure_insmod_from_anssi-PR_11001.patch
-Patch4:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
+# Patch hides cjis, rht-ccp and standard profiles for RHEL8
+Patch0:               hide-profiles-not-in-good-shape-for-RHEL.patch
+Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 
 BuildArch:            noarch
 
@@ -129,27 +123,50 @@ cp -r %{_builddir}/%{_static_rhel6_content}/guides %{buildroot}%{_docdir}/%{name
 %endif
 
 %changelog
-* Fri Feb 09 2024 Release Engineering <releng@openela.org> - 0.1.69.openela.1.0
+* Tue Mar 05 2024 Release Engineering <releng@openela.org> - 0.1.72.openela.1.0
 - Make OpenELA a derivative of RHEL
 
+* Fri Feb 16 2024 Marcus Burghardt <maburgha@redhat.com> - 0.1.72-2
+- Unlist profiles no longer maintained in RHEL8.
+
+* Wed Feb 14 2024 Marcus Burghardt <maburgha@redhat.com> - 0.1.72-1
+- Rebase to a new upstream release 0.1.72 (RHEL-25250)
+- Increase CIS standards coverage regarding SSH and cron (RHEL-1314)
+- Increase compatibility of accounts_tmout rule for ksh (RHEL-16896 and RHEL-1811)
+- Align Ansible and Bash remediation in sssd_certificate_verification rule (RHEL-1313)
+- Add a warning to rule service_rngd_enabled about rule applicability (RHEL-1819)
+- Add rule to terminate idle user sessions after defined time (RHEL-1801)
+- Allow spaces around equal sign in /etc/sudoers (RHEL-1904)
+- Add remediation for rule fapolicy_default_deny (RHEL-1817)
+- Fix invalid syntax in file /usr/share/scap-security-guide/ansible/rhel8-playbook-ospp.yml (RHEL-19127)
+- Refactor ensure_pam_wheel_group_empty (RHEL-1905)
+- Prevent remediation of display_login_attempts rule from creating redundant configuration entries (RHEL-1809)
+- Update PCI-DSS to v4 (RHEL-1808)
+- Fix regex in Ansible remediation of configure_ssh_crypto_policy (RHEL-1820)
+
 * Thu Aug 17 2023 Vojtech Polasek <vpolasek@redhat.com> - 0.1.69-2
-- remove problematic rule from ANSSI High profile (RHBZ#2228444)
+- remove problematic rule from ANSSI High profile (RHBZ#2221695)
 
 * Thu Aug 10 2023 Jan Černý <jcerny@redhat.com> - 0.1.69-1
-- Rebase to a new upstream release 0.1.69 (RHBZ#2228444)
-- Add rule audit_rules_login_events_faillock to STIG profile (RHBZ#2228455)
-- Add appropriate STIGID to accounts_passwords_pam_faillock_interval rule (RHBZ#2228465)
-- Make rule checking for Postfix unrestricted relay accept more variants of valid configuration syntax (RHBZ#2228471)
-- Correct URL used to download CVE checks (RHBZ#2228452)
-- Evaluation and remediation of rules related to mount points have been enhanced for Image builder (RHBZ#2228448)
-- Mention exact required configuration value in description of some PAM related rules (RHBZ#2228441)
-- Fixed rules related to AIDE configuration (RHBZ#2228458)
-- Update ANSSI BP-028 profiles to be aligned with version 2.0 (RHBZ#2228429)
-- Improved and unified OVAL checks checking for interactive users (RHBZ#2228433)
-- Unify OVAL checks to correctly identify interactive users (RHBZ#2228460)
-- Fixed excess quotes in journald configuration files (RHBZ#2228437)
-- Allow default permissions for files stored on EFI FAT partitions (RHBZ#2228443)
-- Make mount point related rules not applicable when no such mount points exist (RHBZ#2228473)
+- Rebase to a new upstream release 0.1.69 (RHBZ#2221695)
+- Fixed CCE link URL (RHBZ#2178516)
+- align remediations with rule description for rule configuring OpenSSL cryptopolicy (RHBZ#2192893)
+- Add rule audit_rules_login_events_faillock to STIG profile (RHBZ#2167999)
+- Fixed rules related to AIDE configuration (RHBZ#2175684)
+- Allow default permissions for files stored on EFI FAT partitions (RHBZ#2184487)
+- Add appropriate STIGID to accounts_passwords_pam_faillock_interval rule (RHBZ#2209073)
+- improved and unified OVAL checks checking for interactive users (RHBZ#2157877)
+- update ANSSI BP-028 profiles to be aligned with version 2.0 (RHBZ#2155789)
+- unify OVAL checks to correctly identify interactive users (RHBZ#2178740)
+- make rule checking for Postfix unrestricted relay accept more variants of valid configuration syntax (RHBZ#2170530)
+- Fixed excess quotes in journald configuration files (RHBZ#2169857)
+- rules related to polyinstantiated directories are not applied when building images for Image Builder (RHBZ#2130182)
+- evaluation and remediation of rules related to mount points have been enhanced for Image Builder (RHBZ#2130185)
+- do not enable FIPS mode when creating hardened images for Image Builder (RHBZ#2130181)
+- Correct URL used to download CVE checks (RHBZ#2222583)
+- mention exact required configuration value in description of some PAM related rules (RHBZ#2175882)
+- make mount point related rules not applicable when no such mount points exist (RHBZ#2176008)
+- improve checks determining if FIPS mode is enabled (RHBZ#2129100)
 
 * Mon Feb 13 2023 Watson Sato <wsato@redhat.com> - 0.1.66-2
 - Unselect rule logind_session_timeout (RHBZ#2158404)

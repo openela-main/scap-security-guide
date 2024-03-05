@@ -1,0 +1,54 @@
+From e0f62e3828b9deda102f247b3789f68aeb4e518d Mon Sep 17 00:00:00 2001
+From: Marcus Burghardt <maburgha@redhat.com>
+Date: Fri, 16 Feb 2024 12:07:36 +0100
+Subject: [PATCH] Hide profiles not in good shape for RHEL
+
+There are some profiles introduced long time ago but no longer
+maintained. For compatibility purposes they are not removed from
+datastream but are now hidden for RHEL8 to prevent people from
+using them.
+---
+ products/rhel8/profiles/cjis.profile     | 2 ++
+ products/rhel8/profiles/rht-ccp.profile  | 2 ++
+ products/rhel8/profiles/standard.profile | 2 ++
+ 3 files changed, 6 insertions(+)
+
+diff --git a/products/rhel8/profiles/cjis.profile b/products/rhel8/profiles/cjis.profile
+index 30843b692e..c44c63516f 100644
+--- a/products/rhel8/profiles/cjis.profile
++++ b/products/rhel8/profiles/cjis.profile
+@@ -1,5 +1,7 @@
+ documentation_complete: true
+ 
++hidden: true
++
+ metadata:
+     version: 5.4
+     SMEs:
+diff --git a/products/rhel8/profiles/rht-ccp.profile b/products/rhel8/profiles/rht-ccp.profile
+index 01133a9bde..3f6cb751c9 100644
+--- a/products/rhel8/profiles/rht-ccp.profile
++++ b/products/rhel8/profiles/rht-ccp.profile
+@@ -1,5 +1,7 @@
+ documentation_complete: true
+ 
++hidden: true
++
+ title: 'Red Hat Corporate Profile for Certified Cloud Providers (RH CCP)'
+ 
+ description: |-
+diff --git a/products/rhel8/profiles/standard.profile b/products/rhel8/profiles/standard.profile
+index 11d72da2d9..79b491113a 100644
+--- a/products/rhel8/profiles/standard.profile
++++ b/products/rhel8/profiles/standard.profile
+@@ -1,5 +1,7 @@
+ documentation_complete: true
+ 
++hidden: true
++
+ title: 'Standard System Security Profile for Red Hat Enterprise Linux 8'
+ 
+ description: |-
+-- 
+2.43.1
+
