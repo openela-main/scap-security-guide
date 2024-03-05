@@ -5,21 +5,15 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.69
-Release:              2%{?dist}.openela.1.0
+Version:              0.1.72
+Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
 URL:                  https://github.com/ComplianceAsCode/content/
 Source0:              https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
-# Fix rule enable_fips_mode
-Patch1:               scap-security-guide-0.1.70-improve_readability_enable_fips_mode-PR_10911.patch
-Patch2:               scap-security-guide-0.1.70-fix_enable_fips_mode-PR_10961.patch
-# remove rules harden_sshd_(macs/ciphers)_openssh_conf_crypto_policy from STIG profile
-Patch3:               scap-security-guide-0.1.70-remove_openssh_hardening_stig-PR_10996.patch
-# remove rule sebool_secure_mode_insmod from ANSSI high profile because it prevents UEFI-based systems from booting
-Patch4:               scap-security-guide-0.1.70-remove_secure_mode_insmod_anssi-PR_11001.patch
 BuildArch:            noarch
-Patch5:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
+
+Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 
 BuildRequires:        libxslt
 BuildRequires:        expat
@@ -106,20 +100,36 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
-* Fri Feb 09 2024 Release Engineering <releng@openela.org> - 0.1.69.openela.1.0
+* Tue Mar 05 2024 Release Engineering <releng@openela.org> - 0.1.72.openela.1.0
 - Add OpenELA as derivative of RHEL
 
-* Thu Aug 17 2023 Jan Černý <jcerny@redhat.com> - 0.1.69-2
-- Remove OpenSSH crypto policy hardening rules from STIG profile (RHBZ#2228447)
-- Fix ANSSI High profile with secure boot (RHBZ#2228447)
+* Tue Feb 13 2024 Marcus Burghardt <maburgha@redhat.com> - 0.1.72-1
+- Rebase to a new upstream release 0.1.72 (RHEL-21425)
+- Check dropin files in /etc/systemd/journald.conf.d/ (RHEL-14484)
+- Fix remediation to not update comments (RHEL-1484)
+- Fix package check on SCAP tests for dnf settings (RHEL-17417)
+- Update description for audit_rules_kernel_module_loading (RHEL-1489)
+- Disable remediation for /dev/shm options in offline mode (RHEL-16801)
+- Include explanatory comment in the remediation of CCE-83871-4 (RHEL-17418)
 
-* Thu Aug 10 2023 Jan Černý <jcerny@redhat.com> - 0.1.69-1
-- Rebase to a new upstream release 0.1.69 (RHBZ#2228447)
-- Fixed excess quotes in journald configuration files (RHBZ#2228439)
-- Change rules checking password age to apply only to local users (RHBZ#2228467)
-- update ANSSI BP-028 profiles to be aligned with version 2.0 (RHBZ#2228431)
-- Correct URL used to download CVE checks. (RHBZ#2228469)
-- Change rules checking home directories to apply only to local users (RHBZ#2228462)
+* Tue Dec 05 2023 Jan Černý <jcerny@redhat.com> - 0.1.69-3
+- Align STIG profile with official DISA STIG for RHEL 9 (RHEL-1807)
+
+* Thu Aug 17 2023 Jan Černý <jcerny@redhat.com> - 0.1.69-2
+- Remove OpenSSH crypto policy hardening rules from STIG profile (RHBZ#2221697)
+- Fix ANSSI High profile with secure boot (RHBZ#2221697)
+
+* Wed Aug 09 2023 Jan Černý <jcerny@redhat.com> - 0.1.69-1
+- Rebase to a new upstream release 0.1.69 (RHBZ#2221697)
+- Improve CIS benchmark rules related to auditing of kernel module related events (RHBZ#2209657)
+- SSSD configuration files are now created with correct permissions whenever remediating SSSD related rules (RHBZ#2211511)
+- add warning about migration of network configuration files when upgrading from RHEL 8 to RHEL 9 (RHBZ#2172555)
+- Correct URL used to download CVE checks. (RHBZ#2223178)
+- update ANSSI BP-028 profiles to be aligned with version 2.0 (RHBZ#2155790)
+- Fixed excess quotes in journald configuration files (RHBZ#2193169)
+- Change rules checking home directories to apply only to local users (RHBZ#2203791)
+- Change rules checking password age to apply only to local users (RHBZ#2213958)
+- Updated man page (RHBZ#2060028)
 
 * Mon Feb 13 2023 Watson Sato <wsato@redhat.com> - 0.1.66-1
 - Rebase to a new upstream release 0.1.66 (RHBZ#2169443)
