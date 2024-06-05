@@ -5,8 +5,8 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.72
-Release:              2%{?dist}.openela.1.0
+Version:              0.1.73
+Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
 Group:                Applications/System
@@ -14,8 +14,7 @@ URL:                  https://github.com/ComplianceAsCode/content/
 Source0:              https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
 # Include tarball with last released rhel6 content
 Source1:              %{_static_rhel6_content}.tar.bz2
-# Patch hides cjis, rht-ccp and standard profiles for RHEL8
-Patch0:               hide-profiles-not-in-good-shape-for-RHEL.patch
+
 Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 
 BuildArch:            noarch
@@ -24,8 +23,7 @@ BuildRequires:        libxslt
 BuildRequires:        expat
 BuildRequires:        openscap-scanner >= 1.2.5
 BuildRequires:        cmake >= 2.8
-# To get python3 inside the buildroot require its path explicitly in BuildRequires
-BuildRequires:        /usr/bin/python3
+BuildRequires:        python3-devel
 BuildRequires:        python%{python3_pkgversion}
 BuildRequires:        python%{python3_pkgversion}-jinja2
 BuildRequires:        python%{python3_pkgversion}-PyYAML
@@ -123,8 +121,15 @@ cp -r %{_builddir}/%{_static_rhel6_content}/guides %{buildroot}%{_docdir}/%{name
 %endif
 
 %changelog
-* Tue Mar 05 2024 Release Engineering <releng@openela.org> - 0.1.72.openela.1.0
+* Wed Jun 05 2024 Release Engineering <releng@openela.org> - 0.1.73.openela.1.0
 - Make OpenELA a derivative of RHEL
+
+* Tue May 21 2024 Jan Černý <jcerny@redhat.com> - 0.1.73-1
+- Rebase scap-security-guide package to version 0.1.73 (RHEL-36733)
+- Change crypto policy used in the CUI profile to FIPS (RHEL-30346)
+- Fix file path identification in Rsyslog configuration (RHEL-17202)
+- Use a correct chrony server address in STIG profile (RHEL-1814)
+- Don't BuildRequire /usr/bin/python3 (RHEL-2244)
 
 * Fri Feb 16 2024 Marcus Burghardt <maburgha@redhat.com> - 0.1.72-2
 - Unlist profiles no longer maintained in RHEL8.
