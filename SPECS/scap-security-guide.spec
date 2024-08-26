@@ -1,12 +1,14 @@
 # Base name of static rhel6 content tarball
 %global _static_rhel6_content %{name}-0.1.52-2.el7_9-rhel6
+# Base name of static rhel7 content tarball
+%global _static_rhel7_content %{name}-0.1.73-1.el7_9-rhel7
 # https://fedoraproject.org/wiki/Changes/CMake_to_do_out-of-source_builds
 %global _vpath_builddir build
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.73
-Release:              1%{?dist}.openela.1.0
+Version:              0.1.74
+Release:              3%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
 Group:                Applications/System
@@ -14,6 +16,8 @@ URL:                  https://github.com/ComplianceAsCode/content/
 Source0:              https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
 # Include tarball with last released rhel6 content
 Source1:              %{_static_rhel6_content}.tar.bz2
+# Include tarball with last released rhel7 content
+Source2:              %{_static_rhel7_content}.tar.bz2
 
 Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 
@@ -64,7 +68,7 @@ The %{name}-rule-playbooks package contains individual ansible playbooks per rul
 %endif
 
 %prep
-%autosetup -p1 -b1
+%setup -q -b1 -b2
 
 %build
 mkdir -p build
@@ -96,6 +100,16 @@ cp -r %{_builddir}/%{_static_rhel6_content}/usr %{buildroot}
 cp -r %{_builddir}/%{_static_rhel6_content}/tables %{buildroot}%{_docdir}/%{name}
 cp -r %{_builddir}/%{_static_rhel6_content}/guides %{buildroot}%{_docdir}/%{name}
 
+# Manually install pre-built rhel7 content
+cp -r %{_builddir}/%{_static_rhel7_content}/usr %{buildroot}
+cp -r %{_builddir}/%{_static_rhel7_content}/tables %{buildroot}%{_docdir}/%{name}
+cp -r %{_builddir}/%{_static_rhel7_content}/guides %{buildroot}%{_docdir}/%{name}
+
+# create symlinks for ssg-<product>-ds-1.2.xml to ssg-<product>-ds.xml
+# this is for backward compatibility
+ln -s ssg-rhel8-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content/ssg-rhel8-ds-1.2.xml
+ln -s ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content/ssg-firefox-ds-1.2.xml
+
 %files
 %{_datadir}/xml/scap/ssg/content
 %{_datadir}/%{name}/kickstart
@@ -121,8 +135,23 @@ cp -r %{_builddir}/%{_static_rhel6_content}/guides %{buildroot}%{_docdir}/%{name
 %endif
 
 %changelog
-* Wed Jun 05 2024 Release Engineering <releng@openela.org> - 0.1.73.openela.1.0
+* Mon Aug 26 2024 Release Engineering <releng@openela.org> - 0.1.74.openela.1.0
 - Make OpenELA a derivative of RHEL
+
+* Mon Aug 19 2024 Vojtech Polasek <vpolasek@redhat.com> - 0.1.74-3
+- fix build
+- keep firefox and rhel8 ds-1.2 files in the package in form of symbolic links to regular ds files
+
+* Fri Aug 16 2024 Vojtech Polasek <vpolasek@redhat.com> - 0.1.74-2
+- include RHEL 7 artifacts from the last RHEL 7 build
+
+* Fri Aug 09 2024 Matthew Burket <mburket@redhat.com> - 0.1.74-1
+- Rebase to a new upstream release 0.1.74 (RHEL-53913)
+- Improve Rsyslog rules to support RainerScript syntax (RHEL-1816)
+- Update password hashing settings for ANSSI-BP-028 (RHEL-54390)
+
+* Wed Aug 07 2024 Milan Lysonek <mlysonek@redhat.com> - 0.1.73-2
+- Switch gating to tmt plan (RHEL-43242)
 
 * Tue May 21 2024 Jan Černý <jcerny@redhat.com> - 0.1.73-1
 - Rebase scap-security-guide package to version 0.1.73 (RHEL-36733)
