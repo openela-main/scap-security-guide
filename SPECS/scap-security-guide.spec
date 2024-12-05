@@ -7,8 +7,8 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.74
-Release:              3%{?dist}.openela.1.0
+Version:              0.1.75
+Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
 Group:                Applications/System
@@ -24,7 +24,6 @@ Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 BuildArch:            noarch
 
 BuildRequires:        libxslt
-BuildRequires:        expat
 BuildRequires:        openscap-scanner >= 1.2.5
 BuildRequires:        cmake >= 2.8
 BuildRequires:        python3-devel
@@ -135,8 +134,12 @@ ln -s ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content/ssg-firefo
 %endif
 
 %changelog
-* Mon Aug 26 2024 Release Engineering <releng@openela.org> - 0.1.74.openela.1.0
+* Thu Dec 05 2024 Release Engineering <releng@openela.org> - 0.1.75.openela.1.0
 - Make OpenELA a derivative of RHEL
+
+* Fri Nov 15 2024 Matthew Burket <mburket@redhat.com> - 0.1.75-1
+- Rebase scap-security-guide to the latest upstream version (RHEL-66153)
+- detection of Grub2 kernel command line arguments has been enhanced to cover more use cases (RHEL-53365)
 
 * Mon Aug 19 2024 Vojtech Polasek <vpolasek@redhat.com> - 0.1.74-3
 - fix build
