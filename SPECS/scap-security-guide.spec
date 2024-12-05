@@ -5,7 +5,7 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.74
+Version:              0.1.75
 Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
@@ -16,7 +16,6 @@ BuildArch:            noarch
 Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 
 BuildRequires:        libxslt
-BuildRequires:        expat
 BuildRequires:        openscap-scanner >= 1.2.5
 BuildRequires:        cmake >= 2.8
 BuildRequires:        python%{python3_pkgversion}-devel
@@ -99,8 +98,16 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
-* Mon Aug 26 2024 Release Engineering <releng@openela.org> - 0.1.74.openela.1.0
+* Thu Dec 05 2024 Release Engineering <releng@openela.org> - 0.1.75.openela.1.0
 - Add OpenELA as derivative of RHEL
+
+* Fri Nov 15 2024 Matthew Burket <mburket@redhat.com> - 0.1.75-1
+- Rebase to new release (RHEL-66154)
+- the rule sshd_use_priv_separation is no longer used (RHEL-66057)
+- add a rule checking for presence of chrony to CIS RHEL 9 profile (RHEL-60005)
+- remediation of Networkmanager DNS mode now remediates value "default" (RHEL-53426)
+- Adjust mount_option_nodev_nonroot_local_partitions to work in Image Builder environments. (RHEL-45018)
+- Adjusted rules related to sshd ensure constancy in checked values and ensure that drop in configuration files are checked. (RHEL-38206)
 
 * Fri Aug 09 2024 Matthew Burket <mburket@redhat.com> - 0.1.74-1
 - Rebase to a new upstream release 0.1.74 (RHEL-53865)
