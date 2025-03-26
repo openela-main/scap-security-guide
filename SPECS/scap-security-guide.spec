@@ -2,12 +2,10 @@
 %global _static_rhel6_content %{name}-0.1.52-2.el7_9-rhel6
 # Base name of static rhel7 content tarball
 %global _static_rhel7_content %{name}-0.1.73-1.el7_9-rhel7
-# https://fedoraproject.org/wiki/Changes/CMake_to_do_out-of-source_builds
-%global _vpath_builddir build
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.75
+Version:              0.1.76
 Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
@@ -18,7 +16,7 @@ Source0:              https://github.com/ComplianceAsCode/content/releases/downl
 Source1:              %{_static_rhel6_content}.tar.bz2
 # Include tarball with last released rhel7 content
 Source2:              %{_static_rhel7_content}.tar.bz2
-
+Patch0:               fix_scap_delta_tailoring.patch
 Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 
 BuildArch:            noarch
@@ -68,30 +66,25 @@ The %{name}-rule-playbooks package contains individual ansible playbooks per rul
 
 %prep
 %setup -q -b1 -b2
+%patch -P 0 -p1
+
+%define cmake_defines_common -DSSG_SEPARATE_SCAP_FILES_ENABLED=OFF -DSSG_BASH_SCRIPTS_ENABLED=OFF -DSSG_PRODUCT_FIREFOX:BOOLEAN=true -DSSG_PRODUCT_JRE:BOOLEAN=TRUE
+%define cmake_defines_specific %{nil}
+%if 0%{?rhel}
+%define cmake_defines_specific -DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE -DSSG_PRODUCT_RHEL%{rhel}:BOOLEAN=TRUE -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=OFF -DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON
+%endif
+%if 0%{?centos}
+%define cmake_defines_specific -DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE -DSSG_PRODUCT_RHEL%{centos}:BOOLEAN=TRUE -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=ON
+%endif
 
 %build
-mkdir -p build
-cd build
-%cmake \
--DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE \
--DSSG_PRODUCT_RHEL7:BOOLEAN=TRUE \
--DSSG_PRODUCT_RHEL8:BOOLEAN=TRUE -DSSG_OpenELA_LINUX_DERIVATIVES_ENABLED:BOOLEAN=TRUE:BOOLEAN=TRUE \
--DSSG_PRODUCT_FIREFOX:BOOLEAN=TRUE \
--DSSG_PRODUCT_JRE:BOOLEAN=TRUE \
-%if %{defined centos}
--DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=ON \
-%else
--DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=OFF \
-%endif
--DSSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED:BOOL=OFF \
-%if %{defined rhel}
--DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON \
-%endif
-../
+mkdir -p %{_vpath_builddir}
+cd %{_vpath_builddir}
+%cmake -S .. %{cmake_defines_common} %{cmake_defines_specific}
 %cmake_build
 
 %install
-cd build
+cd %{_vpath_builddir}
 %cmake_install
 
 # Manually install pre-built rhel6 content
@@ -134,8 +127,11 @@ ln -s ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content/ssg-firefo
 %endif
 
 %changelog
-* Thu Dec 05 2024 Release Engineering <releng@openela.org> - 0.1.75.openela.1.0
+* Wed Mar 26 2025 Release Engineering <releng@openela.org> - 0.1.76.openela.1.0
 - Make OpenELA a derivative of RHEL
+
+* Tue Feb 25 2025 Vojtech Polasek <vpolasek@redhat.com> - 0.1.76-1
+- rebase scap-security-guide to the latest upstream version 0.1.76 (RHEL-74241)
 
 * Fri Nov 15 2024 Matthew Burket <mburket@redhat.com> - 0.1.75-1
 - Rebase scap-security-guide to the latest upstream version (RHEL-66153)
