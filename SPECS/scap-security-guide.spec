@@ -5,19 +5,15 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.77
-Release:              3%{?dist}.openela.1.0
+Version:              0.1.78
+Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
 URL:                  https://github.com/ComplianceAsCode/content/
 Source0:              https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
-# fix applicability of grub2_admin_username and grub2_password rules on uefi systems
-Patch0:               scap-security-guide_0_1_78_fix_uefi_applicability.patch
-Patch1:               scap-security-guide_0_1_78_fix_uefi_applicability_jinja.patch
-# fix wrong grub-mkconfig (should be grub2-mkconfig) command in rule descriptions
-Patch2:               scap-security-guide_0_1_78_fix_wrong_grubmkconfig.patch
 BuildArch:            noarch
-Patch3:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
+
+Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 
 BuildRequires:        libxslt
 BuildRequires:        openscap-scanner >= 1.2.5
@@ -102,8 +98,16 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
-* Thu Jul 10 2025 Release Engineering <releng@openela.org> - 0.1.77.openela.1.0
+* Mon Sep 29 2025 Release Engineering <releng@openela.org> - 0.1.78.openela.1.0
 - Add OpenELA as derivative of RHEL
+
+* Mon Sep 08 2025 vojtapolasek <krecoun@gmail.com> - 0.1.78-1
+- coverage of section 1.2.1.2 of CIS profile has been improved (RHEL-102328)
+- fix checks of rules related to sudo and cron (RHEL-89812)
+- rules allow white spaces around equal sign in Systemd configuration (RHEL-89714)
+- install package polkit-pkla-compat when needed (RHEL-87606)
+- rule auditd_freq correctly honors XCCDF variable (RHEL-64013)
+- rebase scap-security-guide package to version 0.1.78 (RHEL-111009)
 
 * Fri Jun 27 2025 Vojtech Polasek <vpolasek@redhat.com> - 0.1.77-3
 - fix incorrect applicability of Grub2 UEFI specific rules
