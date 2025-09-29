@@ -5,7 +5,7 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.77
+Version:              0.1.78
 Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
@@ -16,7 +16,7 @@ Source0:              https://github.com/ComplianceAsCode/content/releases/downl
 Source1:              %{_static_rhel6_content}.tar.bz2
 # Include tarball with last released rhel7 content
 Source2:              %{_static_rhel7_content}.tar.bz2
-Patch0:               fix_scap_delta_tailoring.patch
+
 Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
 
 BuildArch:            noarch
@@ -66,9 +66,8 @@ The %{name}-rule-playbooks package contains individual ansible playbooks per rul
 
 %prep
 %setup -q -b1 -b2
-%patch -P 0 -p1
 
-%define cmake_defines_common -DSSG_SEPARATE_SCAP_FILES_ENABLED=OFF -DSSG_BASH_SCRIPTS_ENABLED=OFF -DSSG_PRODUCT_FIREFOX:BOOLEAN=true -DSSG_PRODUCT_JRE:BOOLEAN=TRUE
+%define cmake_defines_common -DSSG_SEPARATE_SCAP_FILES_ENABLED=OFF -DSSG_BASH_SCRIPTS_ENABLED=ON -DSSG_PRODUCT_FIREFOX:BOOLEAN=true -DSSG_PRODUCT_JRE:BOOLEAN=TRUE
 %define cmake_defines_specific %{nil}
 %if 0%{?rhel}
 %define cmake_defines_specific -DSSG_PRODUCT_DEFAULT:BOOLEAN=FALSE -DSSG_PRODUCT_RHEL%{rhel}:BOOLEAN=TRUE -DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=OFF -DSSG_ANSIBLE_PLAYBOOKS_PER_RULE_ENABLED:BOOL=ON
@@ -127,11 +126,17 @@ ln -s ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content/ssg-firefo
 %endif
 
 %changelog
-* Thu Jul 10 2025 Release Engineering <releng@openela.org> - 0.1.77.openela.1.0
+* Mon Sep 29 2025 Release Engineering <releng@openela.org> - 0.1.78.openela.1.0
 - Make OpenELA a derivative of RHEL
 
+* Tue Sep 16 2025 Matthew Burket <mburket@redhat.com> - 0.1.78-1
+- Rebase scap-security-guide to the latest upstream version 0.1.78 (RHEL-111011)
+- Rule service_rngd_enabled is now evaluated on RHEL >= 8.4 in case kernel is not in FIPS mode (RHEL-95188)
+- Use default order in rule configure_gnutls_tls_crypto_policy (RHEL-1821)
+- Renable building of bash scripts (RHEL-105501)
+
 * Tue Jun 03 2025 Matthew Burket <mburket@redhat.com> - 0.1.77-1
-- Rebase scap-security-guide to the latest upstream version 0.1.76 (RHEL-94802)
+- Rebase scap-security-guide to the latest upstream version 0.1.77 (RHEL-94802)
 - STIG: do not remediate rule disabling user namespaces (RHEL-76750)
 
 * Tue Feb 25 2025 Vojtech Polasek <vpolasek@redhat.com> - 0.1.76-1
