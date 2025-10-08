@@ -1,0 +1,11 @@
+diff --git a/products/rhel10/profiles/ospp.profile b/products/rhel10/profiles/ospp.profile
+index 23e2baf806..d3b46bc354 100644
+--- a/products/rhel10/profiles/ospp.profile
++++ b/products/rhel10/profiles/ospp.profile
+@@ -1,5 +1,6 @@
+ ---
+ documentation_complete: true
++hidden: true
+ 
+ metadata:
+     version: 4.3
