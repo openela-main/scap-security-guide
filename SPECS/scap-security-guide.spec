@@ -4,8 +4,8 @@
 %global _vpath_builddir build
 
 Name:		scap-security-guide
-Version:	0.1.78
-Release:	1%{?dist}
+Version:	0.1.79
+Release:	2%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 License:	BSD-3-Clause
 URL:		https://github.com/ComplianceAsCode/content/
@@ -99,6 +99,13 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
+* Mon Dec 08 2025 Jan Černý <jcerny@redhat.com> - 0.1.79-2
+- Rebuild (RHEL-130242)
+
+* Tue Dec 2 2025 Artem Denisov <adenisov@redhat.com> - 0.1.79-1
+- rebase scap-security-guide to the latest version 0.1.79 (RHEL-130242)
+- add a test scenario to cover case where user has nologin defined in usr (RHEL-118647)
+
 * Mon Sep 15 2025 Vojtech Polasek <vpolasek@redhat.com> - 0.1.78-1
 - rebase scap-security-guide to the latest version 0.1.78 (RHEL-111008)
 - rules allow white spaces around equal sign in Systemd configuration (RHEL-93659)
