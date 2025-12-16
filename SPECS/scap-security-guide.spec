@@ -5,7 +5,7 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.78
+Version:              0.1.79
 Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
@@ -126,8 +126,17 @@ ln -s ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content/ssg-firefo
 %endif
 
 %changelog
-* Mon Sep 29 2025 Release Engineering <releng@openela.org> - 0.1.78.openela.1.0
+* Tue Dec 16 2025 Release Engineering <releng@openela.org> - 0.1.79.openela.1.0
 - Make OpenELA a derivative of RHEL
+
+* Mon Dec 1 2025 Artem Denisov <adenisov@redhat.com> - 0.1.79-1
+- Rebase scap-security-guide to the latest upstream version 0.1.79 (RHEL-130249)
+- Introduce configure_custom_crypto_policy_cis rule to restrict weak ciphers in RHEL CIS profiles (RHEL-111896)
+- Cover configuration of maxseq parameter in pwquality in all CIS profiles (RHEL-128593)
+- Add missing requirement to configure_custom_crypto_policy_cis rule (RHEL-76009)
+- Enable sshd_disable_forwarding rule for RHEL8 (RHEL-76009)
+- Fix idempotency of network_ipv6_privacy_extensions rule (RHEL-106813)
+- Make enable_authselect rule not applicable in containers (RHEL-84439)
 
 * Tue Sep 16 2025 Matthew Burket <mburket@redhat.com> - 0.1.78-1
 - Rebase scap-security-guide to the latest upstream version 0.1.78 (RHEL-111011)
