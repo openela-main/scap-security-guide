@@ -5,7 +5,7 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.78
+Version:              0.1.79
 Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
@@ -98,8 +98,20 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
-* Mon Sep 29 2025 Release Engineering <releng@openela.org> - 0.1.78.openela.1.0
+* Tue Dec 16 2025 Release Engineering <releng@openela.org> - 0.1.79.openela.1.0
 - Add OpenELA as derivative of RHEL
+
+* Tue Dec 2 2025 adenisov <adenisov@redhat.com> - 0.1.79-1
+- Rebase scap-security-guide package to version 0.1.79 (RHEL-130246)
+- add detection of non-existent directories in root's PATH for RHEL 9 CIS profiles (RHEL-102330)
+- replace systemd_service module with systemd module across Ansible playbooks (RHEL-117141)
+- add multiline support for detecting RainerScript statements in rsyslog configuration (RHEL-104207)
+- introduce a new template for kernel module loading audit rules (RHEL-102334)
+- add audit rules for monitoring changes to /etc/hostname and NetworkManager configuration (RHEL-102331)
+- remove aide_periodic_cron_checking rule from RHEL-09-651015 (RHEL-100924)
+- rule ensure_logrotate_activated inserts the rotation interval at the begining of the file, mitigating possible invalid configuration (RHEL-79123)
+- fix idempotency issue in require_singleuser_auth bash remediation (RHEL-106811)
+- add clarification about using /bin/false and /bin/true for disabling kernel modules (RHEL-106814)
 
 * Mon Sep 08 2025 vojtapolasek <krecoun@gmail.com> - 0.1.78-1
 - coverage of section 1.2.1.2 of CIS profile has been improved (RHEL-102328)
