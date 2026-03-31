@@ -5,7 +5,7 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.79
+Version:              0.1.80
 Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
@@ -126,8 +126,14 @@ ln -s ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content/ssg-firefo
 %endif
 
 %changelog
-* Tue Dec 16 2025 Release Engineering <releng@openela.org> - 0.1.79.openela.1.0
+* Tue Mar 31 2026 Release Engineering <releng@openela.org> - 0.1.80.openela.1.0
 - Make OpenELA a derivative of RHEL
+
+* Tue Mar 10 2026 Vojtech Polasek <vpolasek@redhat.com> - 0.1.80-1
+- RHEL CIS requirement: Ensure password history is enforced for the root user is now fully covered (RHEL-125396)
+- RHEL8 STIG now uses cryptography subpolicy called FIPS:STIG (RHEL-77813)
+- modify shipped kickstart files so that the size of boot partition aligns with official recommended size (RHEL8) (RHEL-145200)
+- Rebase scap-security-guide to the latest upstream version 0.1.80 (RHEL-152058)
 
 * Mon Dec 1 2025 Artem Denisov <adenisov@redhat.com> - 0.1.79-1
 - Rebase scap-security-guide to the latest upstream version 0.1.79 (RHEL-130249)
