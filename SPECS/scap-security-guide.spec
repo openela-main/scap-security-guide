@@ -5,15 +5,16 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.80
+Version:              0.1.81
 Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
 URL:                  https://github.com/ComplianceAsCode/content/
 Source0:              https://github.com/ComplianceAsCode/content/releases/download/v%{version}/scap-security-guide-%{version}.tar.bz2
-BuildArch:            noarch
 
 Patch1:               0001-Add-OpenELA-as-a-derivative-of-RHEL.patch
+
+BuildArch:            noarch
 
 BuildRequires:        libxslt
 BuildRequires:        openscap-scanner >= 1.2.5
@@ -98,36 +99,28 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
-* Tue Mar 31 2026 Release Engineering <releng@openela.org> - 0.1.80.openela.1.0
+* Mon Jun 15 2026 Release Engineering <releng@openela.org> - 0.1.81.openela.1.0
 - Add OpenELA as derivative of RHEL
+
+* Mon Jun 01 2026 Jan Černý <jcerny@redhat.com> - 0.1.81-1
+- rule rsyslog_remote_access_monitoring handles Rainer syntax objects as case insensitive (RHEL-171951)
+- Fixed remediation problems occurring when authselect profiles contain multiple authselect features (RHEL-165050)
+- Rebase scap-security-guide to 0.1.81 (RHEL-180787)
 
 * Wed Mar 11 2026 Vojtech Polasek <vpolasek@redhat.com> - 0.1.80-1
 - Fix inconsistent and missing audit keys in some audit rules (RHEL-141394)
 - Modify shipped kickstart files so that the size of boot partition aligns with official recommended size (RHEL-145201)
 - Disable SHA-1 for the RPM component in RHEL 9 CIS profiles (RHEL-138448)
+- Use correct permissions and consider the log_group option in rules file_permissions_var_log_audit and directory_permissions_var_log_audit (RHEL-138549)
 - Rule configure_ssh_crypto_policy has been removed from RHEL 9 and RHEL 10 profiles. (RHEL-65737)
 - Rules of type sshd_use_strong_kex have been removed from RHEL CIS profiles in favor of system wide crypto policies usage. (RHEL-62941)
 - Rebase scap-security-guide to the latest upstream version 0.1.80 (RHEL-136121)
 
-* Tue Dec 2 2025 adenisov <adenisov@redhat.com> - 0.1.79-1
-- Rebase scap-security-guide package to version 0.1.79 (RHEL-130246)
-- add detection of non-existent directories in root's PATH for RHEL 9 CIS profiles (RHEL-102330)
-- replace systemd_service module with systemd module across Ansible playbooks (RHEL-117141)
-- add multiline support for detecting RainerScript statements in rsyslog configuration (RHEL-104207)
-- introduce a new template for kernel module loading audit rules (RHEL-102334)
-- add audit rules for monitoring changes to /etc/hostname and NetworkManager configuration (RHEL-102331)
-- remove aide_periodic_cron_checking rule from RHEL-09-651015 (RHEL-100924)
-- rule ensure_logrotate_activated inserts the rotation interval at the begining of the file, mitigating possible invalid configuration (RHEL-79123)
-- fix idempotency issue in require_singleuser_auth bash remediation (RHEL-106811)
-- add clarification about using /bin/false and /bin/true for disabling kernel modules (RHEL-106814)
+* Mon Dec 15 2025 Jan Černý <jcerny@redhat.com> - 0.1.79-1
+- Update to the latest upstream release (RHEL-135773)
 
-* Mon Sep 08 2025 vojtapolasek <krecoun@gmail.com> - 0.1.78-1
-- coverage of section 1.2.1.2 of CIS profile has been improved (RHEL-102328)
-- fix checks of rules related to sudo and cron (RHEL-89812)
-- rules allow white spaces around equal sign in Systemd configuration (RHEL-89714)
-- install package polkit-pkla-compat when needed (RHEL-87606)
-- rule auditd_freq correctly honors XCCDF variable (RHEL-64013)
-- rebase scap-security-guide package to version 0.1.78 (RHEL-111009)
+* Thu Sep 11 2025 Matthew Burket <mburket@redhat.com> - 0.1.78-1
+- rebase scap-security-guide package to version 0.1.78 (RHEL-118557)
 
 * Fri Jun 27 2025 Vojtech Polasek <vpolasek@redhat.com> - 0.1.77-3
 - fix incorrect applicability of Grub2 UEFI specific rules
