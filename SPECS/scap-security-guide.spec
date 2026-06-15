@@ -4,7 +4,7 @@
 %global _vpath_builddir build
 
 Name:		scap-security-guide
-Version:	0.1.80
+Version:	0.1.81
 Release:	1%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 License:	BSD-3-Clause
@@ -99,6 +99,11 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
+* Mon Jun 01 2026 Jan Černý <jcerny@redhat.com> - 0.1.81-1
+- Rebase scap-security-guide to 0.1.81 (RHEL-180768)
+- Rules *xccdf_org.ssgproject.content_rule_file_permission_user_init_files* and *xccdf_org.ssgproject.content_rule_file_permission_user_init_files_root* were updated to include text instructions on how to perform the remediation without losing previously set permissions on files that are not compliant. (RHEL-150283)
+- Enabled specifying a custom text (including newlines) in multiple rules checking login banners (RHEL-118499)
+
 * Tue Mar 10 2026 Vojtech Polasek <vpolasek@redhat.com> - 0.1.80-1
 - Import Red Hat quantum-resistant keys using sequoia commands (RHEL-127300)
 - Rule audit_rules_privileged_commands adds architecture filters in audit rules (RHEL-142647)
@@ -107,17 +112,14 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 - Corrected version in the description of CIS profiles (RHEL-143955)
 - Rebase scap-security-guide to the latest upstream version 0.1.80 (RHEL-152059)
 
-* Mon Dec 08 2025 Jan Černý <jcerny@redhat.com> - 0.1.79-2
-- Rebuild (RHEL-130242)
+* Mon Jan 05 2026 Jan Černý <jcerny@redhat.com> - 0.1.79-2
+- Bump version and rebuild
 
-* Tue Dec 2 2025 Artem Denisov <adenisov@redhat.com> - 0.1.79-1
-- rebase scap-security-guide to the latest version 0.1.79 (RHEL-130242)
-- add a test scenario to cover case where user has nologin defined in usr (RHEL-118647)
+* Mon Dec 15 2025 Jan Černý <jcerny@redhat.com> - 0.1.79-1
+- Update to the latest upstream release (RHEL-135774)
 
 * Mon Sep 15 2025 Vojtech Polasek <vpolasek@redhat.com> - 0.1.78-1
-- rebase scap-security-guide to the latest version 0.1.78 (RHEL-111008)
-- rules allow white spaces around equal sign in Systemd configuration (RHEL-93659)
-- add support for dropin files to Systemd coredump rules (RHEL-99973)
+- rebase scap-security-guide to the latest version 0.1.78 (RHEL-120076)
 
 * Fri Jun 27 2025 Vojtech Polasek <vpolasek@redhat.com> - 0.1.77-2
 - fix incorrect applicability of Grub2 UEFI specific rules
