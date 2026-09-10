@@ -4,8 +4,8 @@
 %global _vpath_builddir build
 
 Name:		scap-security-guide
-Version:	0.1.81
-Release:	1%{?dist}
+Version:	0.1.82
+Release:	2%{?dist}
 Summary:	Security guidance and baselines in SCAP formats
 License:	BSD-3-Clause
 URL:		https://github.com/ComplianceAsCode/content/
@@ -99,6 +99,15 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
+* Tue Sep 08 2026 Jan Černý <jcerny@redhat.com> - 0.1.82-2
+- Resolve dropped changelog entry
+
+* Tue Sep 01 2026 Jan Černý <jcerny@redhat.com> - 0.1.82-1
+- Rebase scap-security-guide to 0.1.82 in RHEL 10.2.z (RHEL-242530)
+- Explicitly set file owner and permissions when creating new files or directories (RHEL-182657)
+- Add a rationale text for rule package_sssd_installed (RHEL-178437)
+- Align RHEL 10 STIG profile with official RHEL 10 DISA STIG V1R2 (RHEL-164451)
+
 * Mon Jun 01 2026 Jan Černý <jcerny@redhat.com> - 0.1.81-1
 - Rebase scap-security-guide to 0.1.81 (RHEL-180768)
 - Rules *xccdf_org.ssgproject.content_rule_file_permission_user_init_files* and *xccdf_org.ssgproject.content_rule_file_permission_user_init_files_root* were updated to include text instructions on how to perform the remediation without losing previously set permissions on files that are not compliant. (RHEL-150283)
