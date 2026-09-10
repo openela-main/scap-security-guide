@@ -5,7 +5,7 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.81
+Version:              0.1.82
 Release:              1%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
@@ -126,8 +126,11 @@ ln -s ssg-firefox-ds.xml %{buildroot}%{_datadir}/xml/scap/ssg/content/ssg-firefo
 %endif
 
 %changelog
-* Mon Jun 15 2026 Release Engineering <releng@openela.org> - 0.1.81.openela.1.0
+* Thu Sep 10 2026 Release Engineering <releng@openela.org> - 0.1.82.openela.1.0
 - Make OpenELA a derivative of RHEL
+
+* Tue Sep 01 2026 Jan Černý <jcerny@redhat.com> - 0.1.82-1
+- Rebase scap-security-guide to 0.1.82 in RHEL 8.10.z (RHEL-242522)
 
 * Mon Jun 01 2026 Jan Černý <jcerny@redhat.com> - 0.1.81-1
 - Rebase scap-security-guide to 0.1.81 (RHEL-177640)
