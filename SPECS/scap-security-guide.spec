@@ -5,8 +5,8 @@
 # global _default_patch_fuzz 2  # Normally shouldn't be needed as patches should apply cleanly
 
 Name:                 scap-security-guide
-Version:              0.1.81
-Release:              1%{?dist}.openela.1.0
+Version:              0.1.82
+Release:              2%{?dist}.openela.1.0
 Summary:              Security guidance and baselines in SCAP formats
 License:              BSD-3-Clause
 URL:                  https://github.com/ComplianceAsCode/content/
@@ -99,8 +99,16 @@ rm %{buildroot}/%{_docdir}/%{name}/Contributors.md
 %endif
 
 %changelog
-* Mon Jun 15 2026 Release Engineering <releng@openela.org> - 0.1.81.openela.1.0
+* Thu Sep 10 2026 Release Engineering <releng@openela.org> - 0.1.82.openela.1.0
 - Add OpenELA as derivative of RHEL
+
+* Tue Sep 08 2026 Jan Černý <jcerny@redhat.com> - 0.1.82-2
+- Resolve dropped changelog entry
+
+* Tue Sep 01 2026 Jan Černý <jcerny@redhat.com> - 0.1.82-1
+- Rebase scap-security-guide to 0.1.82 in RHEL 9.8.z (RHEL-242528)
+- Add rule ensure_journald_and_rsyslog_not_active_together to RHEL 9 CIS profiles (RHEL-181671)
+- Add rule crypto_policy_not_overridden to RHEL 9 STIG profile (RHEL-104411)
 
 * Mon Jun 01 2026 Jan Černý <jcerny@redhat.com> - 0.1.81-1
 - rule rsyslog_remote_access_monitoring handles Rainer syntax objects as case insensitive (RHEL-171951)
